@@ -1,3 +1,4 @@
+import { FloatingButton } from "@/components/floating-button";
 import { Task } from "@/components/task"
 import { cn } from "@/lib/utils";
 
@@ -24,18 +25,21 @@ export default function Page() {
     },
 ]
   return (
-    <div className={cn("flex", "flex-row", "flex-wrap")}>
-      {
-        tasks.map((t, i) => (
-          <Task key={i}
-            createdBy={t.createdBy}
-            title={t.title}
-            summary={t.summary}
-            tags={t.tags}
-            jiraTicketUrl={t.jiraTicketUrl ?? null}
-          />
-        ))
-      }
+    <div>
+      <div className={cn("flex", "flex-row", "flex-wrap")}>
+        {
+          tasks.map((t, i) => (
+            <Task key={i}
+              createdBy={t.createdBy}
+              title={t.title}
+              summary={t.summary}
+              tags={t.tags}
+              jiraTicketUrl={t.jiraTicketUrl ?? null}
+            />
+          ))
+        }
+      </div>
+      <FloatingButton />
     </div>
   );
 }
