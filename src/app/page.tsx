@@ -52,6 +52,9 @@ export default function Page() {
 
   return (
     <div>
+      {addTask && (
+        <div className="fixed inset-0 bg-gray-100 opacity-25 z-40" />
+      )}
       <div className={cn("flex", "flex-row", "flex-wrap", "z-1")}>
         {
           tasks.map((t, i) => (
@@ -67,7 +70,7 @@ export default function Page() {
       </div>
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 z-50">
       {
-        addTask ? <CreateTaskCard /> : null
+        addTask ? <CreateTaskCard onCancelClick={() => toggleCreateTaskCard(false)} /> : null
       }
       </div>
       <FloatingButton className="z-1" onClick={() => toggleCreateTaskCard(true)} />

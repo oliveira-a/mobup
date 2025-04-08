@@ -15,7 +15,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 
 
-export function CreateTaskCard({className} : { className?: string | string[]}) {
+export function CreateTaskCard(
+    { 
+        className,
+        onCancelClick
+     }: {
+        className?: string | string[],
+        onCancelClick: React.MouseEventHandler<HTMLButtonElement>
+    }) {
     return (
         <Card className={cn("w-[350px]", className)}>
             <CardHeader>
@@ -37,7 +44,7 @@ export function CreateTaskCard({className} : { className?: string | string[]}) {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
+                <Button onClick={onCancelClick} variant="outline">Cancel</Button>
                 <Button>Create</Button>
             </CardFooter>
         </Card>
