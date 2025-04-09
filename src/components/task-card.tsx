@@ -8,14 +8,14 @@ import {
 import { cn } from "@/lib/utils"
 import { Tag } from "./tag"
   
-interface TaskProps {
+interface TaskCardProps {
     createdBy: string
     title: string
     summary: string
     tags: string[]
 }
 
-export function Task(props: TaskProps) {
+export function TaskCard(props: TaskCardProps) {
     return (
         <Card className={cn("w-[300px]", "m-3", "self-end")}>
             <CardHeader>

@@ -2,71 +2,46 @@
 
 import { CreateTaskCard } from "@/components/create-task";
 import { FloatingButton } from "@/components/floating-button";
-import { Task } from "@/components/task"
+import { TaskCard } from "@/components/task-card"
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-
-interface Task {
-  createdBy: string,
-  title: string,
-  summary: string,
-  tags: string[]
-}
+import { useEffect, useState } from "react";
+import { Task } from "@/lib/dtos/task";
 
 export default function Page() {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      createdBy: "John Doe",
-      title: "Implement a new endpoint in the ODS API",
-      summary: "This tasks involves writing some typespec and some database querying!",
-      tags: ["C#", ".NET", "SQL"],
-    },
-    {
-      createdBy: "Jane Doe",
-      title: "Sort out Jane's stuff so she can start development",
-      summary: "Involves setting up local environemnt on the teriyaki project.",
-      tags: ["Next.js", "Docker", "Windows"],
-    },
-    {
-      createdBy: "Rob Smith",
-      title: "Display a warning message when viewing performance/valuation history of a new portfolio/account",
-      summary: "You're welcome to pair up with me on this task which involves some front-end work.",
-      tags: ["Next.js", "TypeScript"],
-    },
-    {
-      createdBy: "John Doe",
-      title: "Implement a new endpoint in the ODS API",
-      summary: "This tasks involves writing some typespec and some database querying!",
-      tags: ["C#", ".NET", "SQL"],
-    },
-    {
-      createdBy: "Jane Doe",
-      title: "Sort out Jane's stuff so she can start development",
-      summary: "Involves setting up local environemnt on the teriyaki project.",
-      tags: ["Next.js", "Docker", "Windows"],
-    },
-    {
-      createdBy: "Rob Smith",
-      title: "Display a warning message when viewing performance/valuation history of a new portfolio/account",
-      summary: "You're welcome to pair up with me on this task which involves some front-end work.",
-      tags: ["Next.js", "TypeScript"],
-    },
-  ])
-  
-  const [addTask, toggleCreateTaskCard] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([])
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const res = await fetch("/api/tasks")
+      const data = await res.json()
 
-  const handleCreateTask = (createdBy: string, title: string, summary: string, tags: string[]) => {
-    console.log(`createdBy: ${createdBy}, title: ${title}, summary: ${summary}, tags: ${tags}`)
+      setTasks(data)
+    }
+
+    fetchTasks()
+  }, []);
+
+  const [addTask, toggleCreateTaskCard] = useState(false)
+  const handleCreateTask = async (createdBy: string, title: string, summary: string, tags: string[]) => {
+    const newTask: Task = {
+      createdBy: createdBy,
+      title: title,
+      summary: summary,
+      tags: tags,
+    }
+
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTask),
+    });
+
     setTasks(prevTasks => [
       ...prevTasks,
-      {
-        createdBy,
-        title,
-        summary,
-        tags,
-      }
+      newTask
     ]);
-  
+
     toggleCreateTaskCard(false)
   };
 
@@ -78,7 +53,7 @@ export default function Page() {
       <div className={cn("flex", "flex-row", "flex-wrap", "z-1")}>
         {
           tasks.map((t, i) => (
-            <Task key={i}
+            <TaskCard key={i}
               createdBy={t.createdBy}
               title={t.title}
               summary={t.summary}
