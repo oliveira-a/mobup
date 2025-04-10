@@ -5,7 +5,7 @@ const sql = postgres(process.env.POSTGRES_CONN_STRING!)
 
 export async function GET() {
     const tasks = await sql<Task[]>`
-        SELECT title, summary, created_by, tags FROM task
+        SELECT id, title, summary, created_by, tags FROM task
     `
     return Response.json(tasks)
 }
