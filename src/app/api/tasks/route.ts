@@ -1,4 +1,7 @@
 import { Task } from "@/lib/dtos/task"
+import postgres from 'postgres';
+
+const sql = postgres(process.env.POSTGRES_CONN_STRING!)
 
 const tasks: Task[] = [
         {
@@ -22,18 +25,26 @@ const tasks: Task[] = [
     ]
 
 export async function GET() {
-    const response =  Response.json(tasks)
-    return response
+    const tasks = await sql<Task[]>`
+        SELECT title, summary, created_by, tags FROM task
+    `
+    return Response.json(tasks)
 }
 
 export async function POST(req: Request) {
     const body = await req.json()
-    tasks.push({
+    const task = {
         createdBy: body.createdBy,
         title: body.title,
         summary: body.summary,
         tags: body.tags,
-    })
+    }
+
+    await sql`
+        INSERT INTO task(title, summary, created_by, tags)
+        VALUES (${task.title}, ${task.summary}, ${task.createdBy}, ${task.tags})
+    `
+
     return new Response(null, {
         status: 204
     })
