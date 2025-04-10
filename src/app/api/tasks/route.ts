@@ -1,4 +1,4 @@
-import { Task } from "@/lib/dtos/task"
+import { Task } from "@/lib/dtos"
 import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_CONN_STRING!)

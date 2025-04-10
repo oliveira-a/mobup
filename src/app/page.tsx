@@ -5,24 +5,24 @@ import { FloatingButton } from "@/components/floating-button";
 import { TaskCard } from "@/components/task-card"
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { Task } from "@/lib/dtos/task";
+import { Task } from "@/lib/dtos";
 
 export default function Page() {
+  const fetchTasks = async () => {
+    const res = await fetch("/api/tasks")
+    const data = await res.json()
+
+    setTasks(data)
+  }
+
   const [tasks, setTasks] = useState<Task[]>([])
   useEffect(() => {
-    const fetchTasks = async () => {
-      const res = await fetch("/api/tasks")
-      const data = await res.json()
-
-      setTasks(data)
-    }
-
     fetchTasks()
   }, []);
 
   const [addTask, toggleCreateTaskCard] = useState(false)
   const handleCreateTask = async (createdBy: string, title: string, summary: string, tags: string[]) => {
-    const newTask: Task = {
+    const newTask = {
       createdBy: createdBy,
       title: title,
       summary: summary,
@@ -37,10 +37,7 @@ export default function Page() {
       body: JSON.stringify(newTask),
     });
 
-    setTasks(prevTasks => [
-      ...prevTasks,
-      newTask
-    ]);
+    await fetchTasks()
 
     toggleCreateTaskCard(false)
   };
