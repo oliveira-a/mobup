@@ -18,17 +18,18 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { CreateTaskForm } from "./tasks/create-task-form"
+import paths from "@/paths"
 
 const data = {
     user: {
         name: "andreb",
         email: "andreb@mobup.inc",
-        avatar: "/avatars/shadcn.jpg",
+        avatar: "/avatar.jpeg",
     },
     navMain: [
         {
             title: "Dashboard",
-            url: "/",
+            url: paths.dashboard(),
             icon: LayoutDashboardIcon,
         },
     ],
