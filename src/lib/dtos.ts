@@ -1,6 +1,6 @@
 export interface Task {
   id: string,
-  createdBy: string,
+  createdby: string,
   title: string,
   summary: string,
   tags: string[]

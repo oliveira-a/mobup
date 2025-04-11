@@ -28,7 +28,7 @@ export const CreateTaskForm = () => {
   useEffect(() => {
     if (state.type === 'success') {
       setModalOpen(false)
-      toast(`Nice one, ${state.data.createdBy}! Your task was been added successfully!`)
+      toast(`Nice one, ${state.data.createdby}! Your task was been added successfully!`)
     }
   }, [state])
 
@@ -67,7 +67,13 @@ export const CreateTaskForm = () => {
 
               <div className="mt-3">
                 <Label htmlFor="summary" className="font-bold text-sm">Summary:</Label>
-                <Textarea id="summary" name=" summary" placeholder="Add a short description of your task" />
+                <Textarea
+                  id="summary"
+                  name="summary"
+                  placeholder="Add a short description of your task"
+                  className={state.errors?.summary ? "bg-red-100" : ""}
+                />
+                {state.errors?.summary ? <p className="text-red-500 text-xs">{state.errors?.summary}</p> : ""}
               </div>
 
               <div className="mt-3">

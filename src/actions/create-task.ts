@@ -60,7 +60,7 @@ export async function createTask(formState: CreateTaskFormState, formData: FormD
         VALUES(
           ${createdBy},
           ${title},
-          ${summary == undefined ? "" : summary}, 
+          ${summary}, 
           ${normalizedTags}
         )
         RETURNING id, title, created_by, summary, tags`)[0]
@@ -72,7 +72,7 @@ export async function createTask(formState: CreateTaskFormState, formData: FormD
       data: {
         id: task.id,
         title: task.title,
-        createdBy: task.created_by,
+        createdby: task.created_by,
         summary: task.summary,
         tags: task.tags
       }
