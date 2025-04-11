@@ -103,7 +103,6 @@ export const CreateTaskForm = () => {
             <DialogFooter>
               <Button type='submit' disabled={pending}>Create</Button>
             </DialogFooter>
-
             {/*{state.type === 'success' ? toast('nice') : ""}*/}
           </form>
         </DialogContent>

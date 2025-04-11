@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server";
+'use server'
 
 import sql from "@/lib/db"
 import { Task } from "@/lib/dtos";
@@ -65,7 +65,7 @@ export async function createTask(formState: CreateTaskFormState, formData: FormD
         )
         RETURNING id, title, created_by, summary, tags`)[0]
 
-    revalidatePath(paths.home())
+    revalidatePath(paths.dashboard())
 
     return {
       type: 'success',

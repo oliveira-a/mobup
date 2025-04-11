@@ -1,5 +1,5 @@
 const paths = {
-  home() {
+  dashboard() {
     return '/'
   },
   viewTask(id: string) {

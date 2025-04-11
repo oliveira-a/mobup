@@ -10,5 +10,5 @@ export async function deleteTask(id: string) {
         WHERE id = ${id}
     `
 
-    revalidatePath(paths.home())
+    revalidatePath(paths.dashboard())
 }
