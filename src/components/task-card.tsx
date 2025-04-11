@@ -4,10 +4,10 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-  } from "@/components/ui/card"
+} from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { Tag } from "./tag"
-  
+
 interface TaskCardProps {
     createdBy: string
     title: string
@@ -24,12 +24,12 @@ export function TaskCard(props: TaskCardProps) {
             </CardHeader>
             <CardFooter className={cn("text-sm", "flex", "flex-col")}>
                 <div className="block">
-                    <p>Created by <b>{props.createdBy}</b></p> 
+                    <p>Created by <b>{props.createdBy}</b></p>
                 </div>
                 <div className={cn("block", "flex", "flex-wrap", "gap-2", "mt-2")}>
                     {
                         props.tags.map((tag, i) => (
-                            <Tag key={i} name={tag}/>
+                            <Tag key={i} name={tag} />
                         ))
                     }
                 </div>
