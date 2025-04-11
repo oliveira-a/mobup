@@ -1,5 +1,4 @@
 import { TaskCard } from "@/components/task-card"
-import { cn } from "@/lib/utils";
 import * as actions from '@/actions'
 import { CreateTaskForm } from "@/components/tasks/create-task-form";
 
@@ -8,7 +7,7 @@ export default async function Page() {
 
   return (
     <div>
-      <div className={cn("flex", "flex-row", "flex-wrap", "z-1")}>
+      <div className="flex flex-row flex-wrap z-1">
         {
           tasks.map((t, i) => (
             <TaskCard key={i}

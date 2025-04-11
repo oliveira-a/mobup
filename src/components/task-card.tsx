@@ -17,7 +17,7 @@ interface TaskCardProps {
 
 export function TaskCard(props: TaskCardProps) {
     return (
-        <Card className={cn("w-[300px]", "m-3", "self-end")}>
+        <Card className="w-[300px] m-3 self-end">
             <CardHeader>
                 <CardTitle>{props.title}</CardTitle>
                 <CardDescription>{props.summary}</CardDescription>
