@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useActionState, useEffect } from 'react'
+import { useActionState, useEffect, SetStateAction, Dispatch } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog"
 import {
@@ -17,20 +16,22 @@ import { Input } from '../ui/input'
 import { Label } from '@radix-ui/react-label'
 import { Textarea } from '../ui/textarea'
 import { DialogDescription } from '@radix-ui/react-dialog'
-import { cn } from '@/lib/utils'
 import { Toaster, toast } from 'sonner'
 
-export const CreateTaskForm = () => {
-  const [modalOpen, setModalOpen] = useState(false)
+type CreateTaskFormProps = {
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export const CreateTaskForm = ({ modalOpen, setModalOpen }: CreateTaskFormProps) => {
   const [state, action, pending] = useActionState(actions.createTask, {})
 
-  // closes the modal after a successful submission
   useEffect(() => {
     if (state.type === 'success') {
       setModalOpen(false)
       toast(`Nice one, ${state.data.createdby}! Your task was been added successfully!`)
     }
-  }, [state])
+  }, [state, setModalOpen])
 
   return (
     <>
@@ -38,12 +39,7 @@ export const CreateTaskForm = () => {
       {/* Extra credit: show error validation under the right fields */}
       {/* Extra extra credit: show a toast when successful */}
       {/* Dialog */}
-      <Dialog open={modalOpen} onOpenChange={(isOpen) => setModalOpen(isOpen)}>
-        <DialogTrigger asChild>
-          <Button variant="default" className={cn("fixed", "bottom-8", "right-8", "p-4", "rounded-full", "transition")}>
-            Create Task
-          </Button>
-        </DialogTrigger>
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <form action={action}>
             <DialogHeader>
