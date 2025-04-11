@@ -12,6 +12,7 @@ import { Tag } from "./tag"
 import { Button } from "./ui/button"
 import * as actions from "@/actions";
 import { Task } from "@/lib/dtos"
+import { Trash } from "lucide-react"
 
 interface TaskCardProps {
     task: Task
@@ -23,7 +24,9 @@ export function TaskCard(props: TaskCardProps) {
             <CardHeader>
                 <div className="flex flex-row justify-between items-start text-sm">
                     <CardTitle>{props.task.title}</CardTitle>
-                    <Button variant="ghost" className="w-6 h-6 p-1" onClick={() => (actions.deleteTask(props.task.id))}>🗑️</Button>
+                    <Button variant="ghost" className="w-6 h-6 p-1" onClick={() => (actions.deleteTask(props.task.id))}>
+                        <Trash />
+                    </Button>
                 </div>
                 <CardDescription>{props.task.summary}</CardDescription>
             </CardHeader>
