@@ -1,6 +1,6 @@
 const paths = {
   dashboard() {
-    return '/'
+    return '/dashboard'
   },
   viewTask(id: string) {
     return `/tasks/${id}`
