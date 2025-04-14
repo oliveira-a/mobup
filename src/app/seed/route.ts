@@ -1,4 +1,5 @@
 import postgres from 'postgres'
+import bcrypt from 'bcrypt'
 
 const sql = postgres(process.env.POSTGRES_CONN_STRING!)
 
@@ -35,12 +36,31 @@ async function seedTasks() {
         )`
 }
 
+async function createUser() {
+    await sql`
+        CREATE TABLE IF NOT EXISTS "user" (
+            name text not null,
+            email text not null primary key,
+            password text not null
+        )`
+
+    const email = "a@mobup.inc"
+    const password = 'password123'
+    const hashedPassword = await bcrypt.hash(password, 1)
+    const name = "Andre Brasil"
+    await sql`
+        INSERT INTO "user"(name, email, password)
+        VALUES (${name}, ${email}, ${hashedPassword})
+    `
+}
+
 export async function GET() {
     try {
         await seedTasks()
+        await createUser()
         return Response.json({ message: 'Database seeded successfully' });
-      } catch (error) {
+    } catch (error) {
         console.error(error)
         return Response.json({ error }, { status: 500 });
-      }
+    }
 }
