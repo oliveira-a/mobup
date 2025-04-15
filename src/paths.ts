@@ -4,6 +4,9 @@ const paths = {
   },
   viewTask(id: string) {
     return `/tasks/${id}`
+  },
+  login() {
+    return '/login'
   }
 }
 
