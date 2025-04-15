@@ -1,4 +1,7 @@
 const paths = {
+  root() {
+    return '/'
+  },
   dashboard() {
     return '/dashboard'
   },
@@ -6,6 +9,10 @@ const paths = {
     return `/tasks/${id}`
   },
   login() {
+    return '/login'
+  },
+  logout() {
+    // Change this to whatever you want.
     return '/login'
   }
 }
