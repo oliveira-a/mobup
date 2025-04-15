@@ -14,6 +14,9 @@ const paths = {
   logout() {
     // Change this to whatever you want.
     return '/login'
+  },
+  seed() {
+      return '/api/seed'
   }
 }
 

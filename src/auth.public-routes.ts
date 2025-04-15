@@ -7,6 +7,7 @@ import paths from '@/paths';
  * auth.
  */
 export const publicRoutes = [
+    paths.seed(),
     paths.root(),
-    paths.login()
+    paths.login(),
 ];
