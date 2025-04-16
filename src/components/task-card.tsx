@@ -13,7 +13,7 @@ import { Button } from './ui/button'
 import * as actions from '@/actions'
 import { Task } from '@/lib/dtos'
 import { Trash } from 'lucide-react'
-import { Toaster, toast } from 'sonner'
+import { toast } from 'sonner'
 
 interface TaskCardProps {
   task: Task
@@ -28,9 +28,13 @@ export function TaskCard(props: TaskCardProps) {
           <Button
             variant='ghost'
             className='w-6 h-6 p-1'
-            onClick={() => {
-              actions.deleteTask(props.task.id)
-              toast(`Task ${props.task.id} has been deleted!`)
+            onClick={async () => {
+              const ok = await actions.deleteTask(props.task.id)
+              if (!ok) {
+                toast(`An error ocurred when deleting task ${props.task.id}.`)
+              } else {
+                toast(`Task ${props.task.id} deleted!`)
+              }
             }}
           >
             <Trash />
