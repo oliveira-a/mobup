@@ -1,4 +1,4 @@
-import paths from '@/paths';
+import paths from '@/paths'
 
 /**
  * Public Routes
@@ -6,8 +6,4 @@ import paths from '@/paths';
  * These are for routes that don't require any
  * auth.
  */
-export const publicRoutes = [
-    paths.seed(),
-    paths.root(),
-    paths.login(),
-];
+export const publicRoutes = [paths.seed(), paths.root(), paths.login()]

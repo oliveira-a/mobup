@@ -16,8 +16,8 @@ const paths = {
     return '/login'
   },
   seed() {
-      return '/api/seed'
-  }
+    return '/api/seed'
+  },
 }
 
-export default paths;
+export default paths
