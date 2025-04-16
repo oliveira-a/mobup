@@ -17,11 +17,6 @@ import {
 import paths from '@/paths'
 
 const data = {
-  user: {
-    name: 'andreb',
-    email: 'andreb@mobup.inc',
-    avatar: '/avatar.jpeg',
-  },
   navMain: [
     {
       title: 'Dashboard',
@@ -51,10 +46,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-          <NavMain items={data.navMain} />
+          <NavMain username={props.user.name} items={data.navMain} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          <NavUser user={props.user} />
         </SidebarFooter>
       </Sidebar>
     </>

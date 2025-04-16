@@ -16,7 +16,7 @@ import { Trash } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface TaskCardProps {
-  task: Task
+  task: Task,
 }
 
 export function TaskCard(props: TaskCardProps) {

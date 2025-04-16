@@ -18,20 +18,23 @@ import { Toaster, toast } from 'sonner'
 
 type CreateTaskFormProps = {
   modalOpen: boolean
-  setModalOpen: Dispatch<SetStateAction<boolean>>
+  setModalOpen: Dispatch<SetStateAction<boolean>>,
+  createdBy: string
 }
 
 export const CreateTaskForm = ({
   modalOpen,
   setModalOpen,
+  createdBy,
 }: CreateTaskFormProps) => {
   const [state, action, pending] = useActionState(actions.createTask, {})
 
   useEffect(() => {
     if (state.type === 'success') {
       setModalOpen(false)
+      const friendlyName = createdBy.split(' ')[0]
       toast(
-        `Nice one, ${state.data.createdby}! Your task was been added successfully!`
+        `Nice one, ${friendlyName}! Your task was been added successfully!`
       )
     }
   }, [state, setModalOpen])
@@ -89,26 +92,6 @@ export const CreateTaskForm = ({
                 )}
               </div>
 
-              <div className='mt-3'>
-                <Label htmlFor='createdBy' className='font-bold text-sm'>
-                  Created By:
-                </Label>
-                <Input
-                  id='creatdBy'
-                  name='createdBy'
-                  type='text'
-                  className={state.errors?.title ? 'bg-red-100' : ''}
-                  placeholder='John Doe'
-                />
-                {state.errors?.createdBy ? (
-                  <p className='text-red-500 text-xs'>
-                    {state.errors?.createdBy}
-                  </p>
-                ) : (
-                  ''
-                )}
-              </div>
-
               <div className='mt-3 mb-3'>
                 <Label htmlFor='tags' className='font-bold text-sm'>
                   Tags:
@@ -126,6 +109,7 @@ export const CreateTaskForm = ({
                   ''
                 )}
               </div>
+              <input type='hidden' id='createdBy' name='createdBy' defaultValue={createdBy}/>
             </div>
             <DialogFooter>
               <Button type='submit' disabled={pending}>
