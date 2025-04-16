@@ -1,4 +1,4 @@
-import config from '@/config/server';
-import postgres from "postgres";
+import config from '@/config/server'
+import postgres from 'postgres'
 
-export default postgres(config.db.url);
+export default postgres(config.db.url)

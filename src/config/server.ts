@@ -7,7 +7,7 @@ const configSchema = yup.object({
 
 const env = configSchema.cast(process.env, {
   assert: false,
-  stripUnknown: true
+  stripUnknown: true,
 })
 
 configSchema.validateSync(env, { strict: true })
@@ -15,11 +15,10 @@ configSchema.validateSync(env, { strict: true })
 // Define what is available in our app
 const config = {
   db: {
-    url: env.POSTGRES_CONN_STRING
-  }
+    url: env.POSTGRES_CONN_STRING,
+  },
 }
 
-export type Config = typeof config;
+export type Config = typeof config
 
 export default config
-

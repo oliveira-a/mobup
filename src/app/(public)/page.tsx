@@ -1,6 +1,3 @@
-
 export default async function Page() {
-  return (
-    <h1>mobup!</h1>
-  );
+  return <h1>mobup!</h1>
 }

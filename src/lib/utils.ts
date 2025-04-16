@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import * as yup from 'yup'
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,7 +14,6 @@ export type FormState<T extends yup.Schema<any>> = Partial<FormSchema<T>>
 
 export type FormSchema<T extends yup.Schema<any>> =
   T extends yup.Schema<infer U> ? U : never
-
 
 /**
  * Validation Utils
@@ -32,7 +31,7 @@ export async function getValidationErrors<T extends object>({
   } catch (err) {
     const errors: Partial<Record<keyof T, string>> = {}
     if (err instanceof yup.ValidationError) {
-      err.inner.forEach(error => {
+      err.inner.forEach((error) => {
         if (error.path && error.path in data) {
           errors[error.path as keyof T] = error.message
         }
@@ -73,7 +72,7 @@ export function mapFormDataToSchema<T extends yup.Schema<any>>({
   })
 
   // Convert checkbox values to boolean if necessary
-  Object.keys(data).forEach(key => {
+  Object.keys(data).forEach((key) => {
     if (Array.isArray(data[key]) && data[key].length === 1) {
       data[key] = data[key][0]
     }
@@ -81,4 +80,3 @@ export function mapFormDataToSchema<T extends yup.Schema<any>>({
 
   return schema.cast(data, { assert: false, stripUnknown: true })
 }
-
