@@ -9,47 +9,33 @@ import {
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Tag } from './tag'
-import { Button } from './ui/button'
-import * as actions from '@/actions'
 import { Task } from '@/lib/dtos'
-import { Trash } from 'lucide-react'
-import { toast } from 'sonner'
 
 interface TaskCardProps {
   task: Task,
+  onTitleClick?: () => void
 }
 
-export function TaskCard(props: TaskCardProps) {
+export function TaskCard({task, onTitleClick}: TaskCardProps) {
   return (
     <Card className='w-[300px] m-3 self-end'>
       <CardHeader>
         <div className='flex flex-row justify-between items-start text-sm'>
-          <CardTitle>{props.task.title}</CardTitle>
-          <Button
-            variant='ghost'
-            className='w-6 h-6 p-1'
-            onClick={async () => {
-              const ok = await actions.deleteTask(props.task.id)
-              if (!ok) {
-                toast(`An error ocurred when deleting task ${props.task.id}.`)
-              } else {
-                toast(`Task ${props.task.id} deleted!`)
-              }
-            }}
-          >
-            <Trash />
-          </Button>
+          <CardTitle
+            className='hover:underline cursor-pointer'
+            onClick={() => onTitleClick(task)}
+          >{task.title}</CardTitle>
         </div>
-        <CardDescription>{props.task.summary}</CardDescription>
+        <CardDescription>{task.summary}</CardDescription>
       </CardHeader>
       <CardFooter className={cn('text-sm', 'flex', 'flex-col')}>
         <div className='block'>
           <p>
-            Created by <b>{props.task.createdby}</b>
+            Created by <b>{task.createdby}</b>
           </p>
         </div>
         <div className={cn('block', 'flex', 'flex-wrap', 'gap-2', 'mt-2')}>
-          {props.task.tags.map((tag, i) => (
+          {task.tags.map((tag, i) => (
             <Tag key={i} name={tag} />
           ))}
         </div>
