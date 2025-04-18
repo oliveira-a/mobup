@@ -13,9 +13,11 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import * as actions from '@/actions'
 import { toast } from 'sonner'
+import { Tag } from './Tag'
+import { cn } from '@/lib/utils'
 
 interface TasksDashboardProps {
   tasks: Task[]
@@ -27,6 +29,27 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
 
   const [editingTitle, setEditingTitle] = useState(false)
   const [editingSummary, setEditingSummary] = useState(false)
+  const [editingTags, setEditingTags] = useState(false)
+
+  const setFocus = (el) => {
+    el.focus()
+    // moves the cursor to the end
+    el.setSelectionRange(el.value.length, el.value.length)
+  }
+
+  const titleRef = useRef<HTMLTextAreaElement>(null)
+  useEffect(() => {
+    if (editingTitle && titleRef.current) {
+      setFocus(titleRef.current)
+    }
+  }, [editingTitle])
+
+  const summaryRef = useRef<HTMLTextAreaElement>(null)
+  useEffect(() => {
+    if (editingSummary && summaryRef.current) {
+      setFocus(summaryRef.current)
+    }
+  }, [editingSummary])
 
   const handleEdit = (task: Task) => {
     setSelectedTask(task)
@@ -45,9 +68,11 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
     <Sheet open={open} onOpenChange={setOpen}>
     <SheetContent>
       <SheetHeader className="mt-5">
+        <SheetTitle>Task {selectedTask?.id ?? ""}</SheetTitle>
         <form>
         {editingTitle ?
           <Textarea
+            ref={titleRef}
             name="title"
             value={selectedTask?.title ?? ""}
             onChange={(e) => {
@@ -62,6 +87,7 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
         }
         {editingSummary ?
           <Textarea
+            ref={summaryRef}
             name="title"
             value={selectedTask?.summary ?? ""}
             onChange={(e) => {
@@ -76,6 +102,26 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
             {selectedTask?.summary ?? ""}
           </SheetDescription>
         }
+        {editingTags ? (
+          <Textarea
+            name="tags"
+            value={selectedTask?.tags.join(',') ?? ""}
+            onChange={(e) => {
+              // todo: update the tags here
+            }}
+          />
+        ) : (
+          <div className="block flex flex-wrap gap-2 mt-4">
+            {selectedTask?.tags.map(
+              (tag, i) => 
+                <Tag 
+                  key={i} 
+                  name={tag} 
+                  className="hover:border border-2"
+                />
+            )}
+          </div>
+        )}
         </form>
       </SheetHeader>
       {/* todo: add a comment section here. */}
@@ -89,7 +135,6 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
         } else {
           toast(`Task ${selectedTask.id} deleted!`)
         }
-
         setOpen(false)
       }}>Delete</Button>
       </div>
