@@ -64,6 +64,17 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
     setOpen(true)
   }
 
+  const updateTask = async () => {
+    await actions.updateTask(
+      {
+        id: selectedTask.id,
+        title: selectedTask.title,
+        summary: selectedTask.summary,
+        tags: selectedTask.tags.join(',')
+      }
+    )
+  }
+
   return (
     <>
       <div className='flex flex-row flex-wrap z-1'>
@@ -86,7 +97,10 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                   onChange={(e) => {
                     setSelectedTask({ ...selectedTask, title: e.target.value })
                   }}
-                  onBlur={() => setEditingTitle(false)}
+                  onBlur={async () => { 
+                    await updateTask()
+                    setEditingTitle(false) 
+                  }}
                 />
               ) : (
                 <SheetTitle
@@ -107,7 +121,10 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                       summary: e.target.value,
                     })
                   }}
-                  onBlur={() => setEditingSummary(false)}
+                  onBlur={async () => { 
+                    await updateTask()
+                    setEditingSummary(false)
+                  }}
                 />
               ) : (
                 <SheetDescription
@@ -134,7 +151,10 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                         tags: e.target.value.split(','),
                       })
                     }}
-                    onBlur={() => setEditingTags(false)}
+                    onBlur={async () => {
+                      await updateTask()
+                      setEditingTags(false)
+                    }}
                   />
                   <Label className='mt-2' htmlFor='tags'>
                     Add tags, using ',' as a separator
@@ -157,7 +177,6 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
           {/* todo: add a comment section here. */}
           <SheetFooter>
             <div className='flex flex-row gap-2 self-end'>
-              <Button>Save</Button>
               <Button
                 variant='ghost'
                 onClick={async () => {
@@ -169,7 +188,7 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                   }
                   setOpen(false)
                 }}
-              >
+                >
                 Delete
               </Button>
             </div>

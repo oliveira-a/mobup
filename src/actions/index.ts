@@ -1,6 +1,6 @@
 export * from './authenticate-user'
 export * from './create-task'
-export * from './create-task'
+export * from './update-task'
 export * from './delete-task'
 export * from './get-auth-session'
 export * from './get-tasks'
