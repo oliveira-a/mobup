@@ -12,11 +12,11 @@ import { Tag } from './tag'
 import { Task } from '@/lib/dtos'
 
 interface TaskCardProps {
-  task: Task,
+  task: Task
   onTitleClick?: () => void
 }
 
-export function TaskCard({task, onTitleClick}: TaskCardProps) {
+export function TaskCard({ task, onTitleClick }: TaskCardProps) {
   return (
     <Card className='w-[300px] m-3 self-end'>
       <CardHeader>
@@ -24,7 +24,9 @@ export function TaskCard({task, onTitleClick}: TaskCardProps) {
           <CardTitle
             className='hover:underline cursor-pointer'
             onClick={() => onTitleClick(task)}
-          >{task.title}</CardTitle>
+          >
+            {task.title}
+          </CardTitle>
         </div>
         <CardDescription>{task.summary}</CardDescription>
       </CardHeader>

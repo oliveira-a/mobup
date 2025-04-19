@@ -15,13 +15,13 @@ import { useState } from 'react'
 
 export function NavMain({
   items,
-  username
+  username,
 }: {
   items: {
     title: string
     url: string
     icon?: LucideIcon
-  }[],
+  }[]
   string
 }) {
   const router = useRouter()
@@ -58,7 +58,11 @@ export function NavMain({
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
-      <CreateTaskForm createdBy={username} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <CreateTaskForm
+        createdBy={username}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      />
     </>
   )
 }

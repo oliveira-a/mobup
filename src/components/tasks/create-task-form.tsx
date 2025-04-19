@@ -18,7 +18,7 @@ import { Toaster, toast } from 'sonner'
 
 type CreateTaskFormProps = {
   modalOpen: boolean
-  setModalOpen: Dispatch<SetStateAction<boolean>>,
+  setModalOpen: Dispatch<SetStateAction<boolean>>
   createdBy: string
 }
 
@@ -33,9 +33,7 @@ export const CreateTaskForm = ({
     if (state.type === 'success') {
       setModalOpen(false)
       const friendlyName = createdBy.split(' ')[0]
-      toast(
-        `Nice one, ${friendlyName}! Your task was been added successfully!`
-      )
+      toast(`Nice one, ${friendlyName}! Your task was been added successfully!`)
     }
   }, [state, setModalOpen])
 
@@ -109,7 +107,12 @@ export const CreateTaskForm = ({
                   ''
                 )}
               </div>
-              <input type='hidden' id='createdBy' name='createdBy' defaultValue={createdBy}/>
+              <input
+                type='hidden'
+                id='createdBy'
+                name='createdBy'
+                defaultValue={createdBy}
+              />
             </div>
             <DialogFooter>
               <Button type='submit' disabled={pending}>
