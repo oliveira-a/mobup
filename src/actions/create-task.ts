@@ -14,10 +14,7 @@ import {
 import paths from '@/paths'
 
 const schema = yup.object({
-  createdBy: yup
-    .string()
-    .trim()
-    .required('You need to provide your name when creating a task'),
+  ownerId: yup.string().trim().required('owner id is missing.'),
   title: yup
     .string()
     .trim()
@@ -44,8 +41,6 @@ type CreateTaskFormState =
     }
   | Record<string, never>
 
-// Form State: What you are going to return to the caller?
-// Form Data: What did the user submit in their form?
 export async function createTask(
   formState: CreateTaskFormState,
   formData: FormData
@@ -54,6 +49,7 @@ export async function createTask(
   const validationErrors = await getValidationErrors({ schema, data })
 
   if (hasValidationErrors(validationErrors)) {
+    console.log(validationErrors)
     return {
       type: 'error',
       errors: validationErrors,
@@ -62,18 +58,18 @@ export async function createTask(
 
   try {
     const normalizedTags = data.tags.split(',').filter(Boolean)
-    const { createdBy, title, summary } = data
+    const { ownerId, title, summary } = data
 
     const task = (
       await sql`
-        INSERT INTO task(created_by, title, summary, tags)
+        INSERT INTO task(owner_id, title, summary, tags)
         VALUES(
-          ${createdBy},
+          ${ownerId},
           ${title},
-          ${summary}, 
+          ${summary},
           ${normalizedTags}
         )
-        RETURNING id, title, created_by, summary, tags`
+        RETURNING id, title, summary, tags`
     )[0]
 
     revalidatePath(paths.dashboard())
@@ -83,7 +79,6 @@ export async function createTask(
       data: {
         id: task.id,
         title: task.title,
-        createdby: task.created_by,
         summary: task.summary,
         tags: task.tags,
       },

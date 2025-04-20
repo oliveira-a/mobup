@@ -20,6 +20,7 @@ export const { auth, signIn, signOut } = NextAuth({
           const { email, password } = schema.cast(credentials)
           const user = await getUser(email)
           if (!user) {
+            console.log('User does not exist.')
             return null
           }
 
@@ -35,4 +36,18 @@ export const { auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string
+      }
+      return session
+    },
+  },
 })

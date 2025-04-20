@@ -65,14 +65,12 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
   }
 
   const updateTask = async () => {
-    await actions.updateTask(
-      {
-        id: selectedTask.id,
-        title: selectedTask.title,
-        summary: selectedTask.summary,
-        tags: selectedTask.tags.join(',')
-      }
-    )
+    await actions.updateTask({
+      id: selectedTask.id,
+      title: selectedTask.title,
+      summary: selectedTask.summary,
+      tags: selectedTask.tags.join(','),
+    })
   }
 
   return (
@@ -97,9 +95,9 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                   onChange={(e) => {
                     setSelectedTask({ ...selectedTask, title: e.target.value })
                   }}
-                  onBlur={async () => { 
+                  onBlur={async () => {
                     await updateTask()
-                    setEditingTitle(false) 
+                    setEditingTitle(false)
                   }}
                 />
               ) : (
@@ -121,7 +119,7 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                       summary: e.target.value,
                     })
                   }}
-                  onBlur={async () => { 
+                  onBlur={async () => {
                     await updateTask()
                     setEditingSummary(false)
                   }}
@@ -188,7 +186,7 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                   }
                   setOpen(false)
                 }}
-                >
+              >
                 Delete
               </Button>
             </div>

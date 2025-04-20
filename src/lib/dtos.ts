@@ -1,9 +1,14 @@
 export interface Task {
   id: string
-  createdby: string
+  owner: TaskOwner
   title: string
   summary: string
   tags: string[]
+}
+
+export interface TaskOwner {
+  id: string
+  name: string
 }
 
 export type User = {

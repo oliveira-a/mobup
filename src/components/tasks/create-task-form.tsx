@@ -19,30 +19,25 @@ import { Toaster, toast } from 'sonner'
 type CreateTaskFormProps = {
   modalOpen: boolean
   setModalOpen: Dispatch<SetStateAction<boolean>>
-  createdBy: string
+  ownerId: string
 }
 
 export const CreateTaskForm = ({
   modalOpen,
   setModalOpen,
-  createdBy,
+  ownerId,
 }: CreateTaskFormProps) => {
   const [state, action, pending] = useActionState(actions.createTask, {})
 
   useEffect(() => {
     if (state.type === 'success') {
       setModalOpen(false)
-      const friendlyName = createdBy.split(' ')[0]
-      toast(`Nice one, ${friendlyName}! Your task was been added successfully!`)
+      toast(`Your task was been added!`)
     }
   }, [state, setModalOpen])
 
   return (
     <>
-      {/* Your job: add the form inputs */}
-      {/* Extra credit: show error validation under the right fields */}
-      {/* Extra extra credit: show a toast when successful */}
-      {/* Dialog */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <form action={action}>
@@ -109,9 +104,9 @@ export const CreateTaskForm = ({
               </div>
               <input
                 type='hidden'
-                id='createdBy'
-                name='createdBy'
-                defaultValue={createdBy}
+                id='ownerId'
+                name='ownerId'
+                defaultValue={ownerId}
               />
             </div>
             <DialogFooter>
@@ -119,7 +114,6 @@ export const CreateTaskForm = ({
                 Create
               </Button>
             </DialogFooter>
-            {/*{state.type === 'success' ? toast('nice') : ""}*/}
           </form>
         </DialogContent>
       </Dialog>

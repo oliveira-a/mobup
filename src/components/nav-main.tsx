@@ -15,7 +15,7 @@ import { useState } from 'react'
 
 export function NavMain({
   items,
-  username,
+  userId,
 }: {
   items: {
     title: string
@@ -59,7 +59,7 @@ export function NavMain({
         </SidebarGroupContent>
       </SidebarGroup>
       <CreateTaskForm
-        createdBy={username}
+        ownerId={userId}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       />

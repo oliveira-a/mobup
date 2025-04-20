@@ -5,13 +5,12 @@ import { User } from '@/lib/dtos'
 
 export async function getUser(email: string): Promise<User | undefined> {
   try {
-    const user = await sql<User[]>`SELECT * FROM "user" WHERE email=${email}`
-
-    console.log(user)
-
+    const user = await sql<User[]>`
+      SELECT id, name, email, password
+      FROM "user"
+      WHERE email=${email}`
     return user[0]
   } catch (error) {
-    console.error('Failed to fetch user:', error)
     throw new Error('Failed to fetch user.')
   }
 }

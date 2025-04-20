@@ -13,10 +13,7 @@ import {
 import paths from '@/paths'
 
 const schema = yup.object({
-  id: yup
-    .string()
-    .trim()
-    .required('The task id was not provided'),
+  id: yup.string().trim().required('The task id was not provided'),
   title: yup
     .string()
     .trim()
@@ -30,9 +27,12 @@ const schema = yup.object({
     .required('Please provide some tags as comma separated values'),
 })
 
-export async function updateTask(
-  task : {id: string, title: string, summary: string, tags: string}
-): Promise<UpdateTaskFormState> {
+export async function updateTask(task: {
+  id: string
+  title: string
+  summary: string
+  tags: string
+}): Promise<UpdateTaskFormState> {
   const data = await schema.validate(task)
   const normalizedTags = data.tags.split(',').filter(Boolean)
   const { id, title, summary } = data
@@ -43,7 +43,7 @@ export async function updateTask(
         UPDATE task
         SET title = ${title}, summary = ${summary}, tags = ${normalizedTags}
         WHERE id = ${id}
-        RETURNING id, title, created_by, summary, tags`
+        RETURNING id, title, summary, tags`
     )[0]
 
     revalidatePath(paths.dashboard())
@@ -66,4 +66,3 @@ export async function updateTask(
     }
   }
 }
-

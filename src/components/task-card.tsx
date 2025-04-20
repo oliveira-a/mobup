@@ -33,7 +33,7 @@ export function TaskCard({ task, onTitleClick }: TaskCardProps) {
       <CardFooter className={cn('text-sm', 'flex', 'flex-col')}>
         <div className='block'>
           <p>
-            Created by <b>{task.createdby}</b>
+            Created by <b>{task.owner.name}</b>
           </p>
         </div>
         <div className={cn('block', 'flex', 'flex-wrap', 'gap-2', 'mt-2')}>
