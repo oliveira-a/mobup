@@ -7,13 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { cn, getInitials } from '@/lib/utils'
 import { Tag } from '@/components/tag'
 import { Task } from '@/lib/dtos'
 
 interface TaskCardProps {
   task: Task
-  onTitleClick?: () => void
+  onTitleClick?: (task: Task) => void
 }
 
 export function TaskCard({ task, onTitleClick }: TaskCardProps) {
@@ -30,13 +31,16 @@ export function TaskCard({ task, onTitleClick }: TaskCardProps) {
         </div>
         <CardDescription>{task.summary}</CardDescription>
       </CardHeader>
-      <CardFooter className={cn('text-sm', 'flex', 'flex-col')}>
-        <div className='block'>
-          <p>
-            Created by <b>{task.owner.name}</b>
-          </p>
+      <CardFooter className='text-sm flex flex-col'>
+        <div className='flex flex-row'>
+          <Avatar className='h-5 w-5 mr-1 grayscale'>
+            <AvatarFallback className='text-xs'>
+              {getInitials(task.owner.name)}
+            </AvatarFallback>
+          </Avatar>
+          <span className='font-medium'>{task.owner.name}</span>
         </div>
-        <div className={cn('block', 'flex', 'flex-wrap', 'gap-2', 'mt-2')}>
+        <div className='block flex flex-wrap gap-2 mt-2'>
           {task.tags.map((tag, i) => (
             <Tag key={i} name={tag} />
           ))}
