@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { Tag } from './tag'
+import { Tag } from '@/components/tag'
 import { Task } from '@/lib/dtos'
 
 interface TaskCardProps {

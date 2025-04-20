@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { useRouter } from 'next/navigation'
-import { CreateTaskForm } from './tasks/create-task-form'
+import { CreateTaskForm } from '@/components/tasks/create-task-form'
 import { useState } from 'react'
 
 export function NavMain({
