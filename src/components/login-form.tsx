@@ -12,7 +12,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useActionState } from 'react'
-import { authenticate } from '@/actions/authenticate-user'
+import { authenticate, authenticateGithub } from '@/actions/authenticate-user'
+import { signIn } from '@/auth'
 import { useSearchParams } from 'next/navigation'
 
 export function LoginForm({
@@ -63,6 +64,11 @@ export function LoginForm({
               <input type='hidden' name='redirectTo' value={callbackUrl} />
               <Button type='submit' className='w-full' disabled={isPending}>
                 Login
+              </Button>
+              <span className='self-center'>or</span>
+              <Button onClick={async () => await authenticateGithub()}>
+                {/*add icon*/}
+                Login with Github
               </Button>
               {errorMessage && (
                 <>

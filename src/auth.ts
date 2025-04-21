@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
+import Github from 'next-auth/providers/github'
 import { authConfig } from './auth.config'
 import * as yup from 'yup'
 import bcrypt from 'bcrypt'
@@ -8,6 +9,7 @@ import { getUser } from '@/actions/get-user'
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
+    Github,
     Credentials({
       async authorize(credentials) {
         const schema = new yup.ObjectSchema({

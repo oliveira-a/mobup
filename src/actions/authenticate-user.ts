@@ -21,3 +21,7 @@ export async function authenticate(
     throw error
   }
 }
+
+export async function authenticateGithub() {
+  await signIn('github')
+}
