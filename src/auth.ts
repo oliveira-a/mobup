@@ -6,10 +6,13 @@ import * as yup from 'yup'
 import bcrypt from 'bcrypt'
 import { getUser } from '@/actions/get-user'
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
-    Github,
+    Github({
+      clientId: process.env.AUTH_GITHUB_ID ?? "",
+      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+    }),
     Credentials({
       async authorize(credentials) {
         const schema = new yup.ObjectSchema({

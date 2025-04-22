@@ -13,8 +13,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useActionState } from 'react'
 import { authenticate, authenticateGithub } from '@/actions/authenticate-user'
-import { signIn } from '@/auth'
 import { useSearchParams } from 'next/navigation'
+import { GithubIcon } from 'lucide-react'
 
 export function LoginForm({
   className,
@@ -67,8 +67,8 @@ export function LoginForm({
               </Button>
               <span className='self-center'>or</span>
               <Button onClick={async () => await authenticateGithub()}>
-                {/*add icon*/}
-                Login with Github
+              <GithubIcon />
+                Login with GitHub
               </Button>
               {errorMessage && (
                 <>
