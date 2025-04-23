@@ -10,8 +10,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Github({
-      clientId: process.env.AUTH_GITHUB_ID ?? "",
-      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+      clientId: process.env.AUTH_GITHUB_ID ?? '',
+      clientSecret: process.env.AUTH_GITHUB_SECRET ?? '',
     }),
     Credentials({
       async authorize(credentials) {

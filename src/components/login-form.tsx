@@ -67,7 +67,7 @@ export function LoginForm({
               </Button>
               <span className='self-center'>or</span>
               <Button onClick={async () => await authenticateGithub()}>
-              <GithubIcon />
+                <GithubIcon />
                 Login with GitHub
               </Button>
               {errorMessage && (

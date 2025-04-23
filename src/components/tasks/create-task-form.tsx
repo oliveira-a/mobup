@@ -32,12 +32,13 @@ export const CreateTaskForm = ({
   useEffect(() => {
     if (state.type === 'success') {
       setModalOpen(false)
-      toast(`Your task was been added!`)
+      toast(`Task ${state.data.id} was been added!`)
     }
   }, [state, setModalOpen])
 
   return (
     <>
+      {/* todo: add on close callback to clean the form */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <form action={action}>

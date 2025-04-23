@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import sql from '@/lib/db'
-import { Task } from '@/lib/dtos'
 import * as yup from 'yup'
 import { revalidatePath } from 'next/cache'
 import {
@@ -14,7 +12,7 @@ import {
 import paths from '@/paths'
 
 const schema = yup.object({
-  ownerId: yup.string().trim().required('owner id is missing.'),
+  ownerId: yup.string().trim().required('The owner id is missing.'),
   title: yup
     .string()
     .trim()
@@ -31,7 +29,9 @@ const schema = yup.object({
 type CreateTaskFormState =
   | {
       type: 'success'
-      data: Task
+      data: {
+        id: string
+      }
       errors?: never
     }
   | {
@@ -69,7 +69,7 @@ export async function createTask(
           ${summary},
           ${normalizedTags}
         )
-        RETURNING id, title, summary, tags`
+        RETURNING id`
     )[0]
 
     revalidatePath(paths.dashboard())
@@ -78,14 +78,10 @@ export async function createTask(
       type: 'success',
       data: {
         id: task.id,
-        title: task.title,
-        summary: task.summary,
-        tags: task.tags,
       },
     }
   } catch (err) {
     console.log(err)
-
     return {
       type: 'error',
       errors: {
