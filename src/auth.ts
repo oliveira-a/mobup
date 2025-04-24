@@ -25,5 +25,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
       return session
     },
+    async signIn({ session }) {
+      // todo: register the user into the database
+      return session
+    }
   },
 })
