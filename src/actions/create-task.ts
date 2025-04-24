@@ -1,6 +1,5 @@
 'use server'
 
-import sql from '@/lib/db'
 import * as yup from 'yup'
 import { revalidatePath } from 'next/cache'
 import {
@@ -10,6 +9,7 @@ import {
   hasValidationErrors,
 } from '@/lib/utils'
 import paths from '@/paths'
+import prisma from '@/lib/db'
 
 const schema = yup.object({
   ownerId: yup.string().trim().required('The owner id is missing.'),
@@ -57,20 +57,24 @@ export async function createTask(
   }
 
   try {
-    const normalizedTags = data.tags.split(',').filter(Boolean)
-    const { ownerId, title, summary } = data
+    const normalizedTags = data.tags
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(Boolean)
 
-    const task = (
-      await sql`
-        INSERT INTO task(owner_id, title, summary, tags)
-        VALUES(
-          ${ownerId},
-          ${title},
-          ${summary},
-          ${normalizedTags}
-        )
-        RETURNING id`
-    )[0]
+    prisma.task.create({
+      data: {
+        userId: data.ownerId,
+        title: data.title,
+        summary: data.summary,
+        tags: {
+          connectOrCreate: normalizedTags.map(name => ({
+            where: { name },
+            create: { name }
+          }))
+        }
+      }
+    })
 
     revalidatePath(paths.dashboard())
 

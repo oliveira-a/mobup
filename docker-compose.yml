@@ -4,9 +4,7 @@ services:
     image: postgres
     environment:
       POSTGRES_USER: postgres
-      PGUSER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_DB: mobup
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres

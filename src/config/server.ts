@@ -1,8 +1,7 @@
 import * as yup from 'yup'
 
-// Define how to validate
 const configSchema = yup.object({
-  POSTGRES_CONN_STRING: yup.string().required(),
+  DATABASE_URL: yup.string().required(),
 })
 
 const env = configSchema.cast(process.env, {
@@ -12,10 +11,9 @@ const env = configSchema.cast(process.env, {
 
 configSchema.validateSync(env, { strict: true })
 
-// Define what is available in our app
 const config = {
   db: {
-    url: env.POSTGRES_CONN_STRING,
+    url: env.DATABASE_URL,
   },
 }
 

@@ -1,4 +1,3 @@
-import config from '@/config/server'
-import postgres from 'postgres'
+import { PrismaClient } from '@prisma/client'
 
-export default postgres(config.db.url)
+export default new PrismaClient()

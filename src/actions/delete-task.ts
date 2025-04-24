@@ -1,19 +1,16 @@
 'use server'
 
-import sql from '@/lib/db'
 import paths from '@/paths'
 import { revalidatePath } from 'next/cache'
+import prisma from '@/lib/db'
 
-export async function deleteTask(id: string): Promise<boolean> {
-  try {
-    await sql`
-      DELETE FROM task
-      WHERE id = ${id}
-  `
-  } catch (err) {
-    console.error(err)
-    return false
-  }
+export async function deleteTask(id: int): Promise<boolean> {
+  await prisma.task.delete({
+    where: {
+      id: id
+    }
+  })
+
   revalidatePath(paths.dashboard())
 
   return true

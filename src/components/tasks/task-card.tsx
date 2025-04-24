@@ -10,7 +10,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { cn, getInitials } from '@/lib/utils'
 import { Tag } from '@/components/tag'
-import { Task } from '@/lib/dtos'
+import { Task } from '@/prisma/client'
 
 interface TaskCardProps {
   task: Task
@@ -35,14 +35,14 @@ export function TaskCard({ task, onTitleClick }: TaskCardProps) {
         <div className='flex flex-row'>
           <Avatar className='h-5 w-5 mr-1 grayscale'>
             <AvatarFallback className='text-xs'>
-              {getInitials(task.owner.name)}
+              {getInitials(task.user.name)}
             </AvatarFallback>
           </Avatar>
-          <span className='font-medium'>{task.owner.name}</span>
+          <span className='font-medium'>{task.user.name}</span>
         </div>
         <div className='block flex flex-wrap gap-2 mt-2'>
           {task.tags.map((tag, i) => (
-            <Tag key={i} name={tag} />
+            <Tag key={i} name={tag.name} />
           ))}
         </div>
       </CardFooter>
