@@ -4,11 +4,7 @@ const prisma = new PrismaClient()
 
 async function main() {
   await prisma.tag.createMany({
-    data: [
-      { name: 'next.js' },
-      { name: 'C#' },
-      { name: 'Go' },
-    ],
+    data: [{ name: 'next.js' }, { name: 'C#' }, { name: 'Go' }],
     skipDuplicates: true,
   })
 
@@ -26,10 +22,7 @@ async function main() {
           title: 'Join the Prisma Discord',
           summary: 'https://pris.ly/discord',
           tags: {
-            connect: [
-              { id: tagGo?.id || 0 },
-              { id: tagNext?.id || 0 },
-            ],
+            connect: [{ id: tagGo?.id || 0 }, { id: tagNext?.id || 0 }],
           },
         },
       },
@@ -61,4 +54,3 @@ main()
     prisma.$disconnect()
     process.exit(1)
   })
-

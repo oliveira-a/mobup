@@ -59,21 +59,21 @@ export async function createTask(
   try {
     const normalizedTags = data.tags
       .split(',')
-      .map(tag => tag.trim())
+      .map((tag) => tag.trim())
       .filter(Boolean)
 
-    prisma.task.create({
+    const task = await prisma.task.create({
       data: {
         userId: data.ownerId,
         title: data.title,
         summary: data.summary,
         tags: {
-          connectOrCreate: normalizedTags.map(name => ({
+          connectOrCreate: normalizedTags.map((name) => ({
             where: { name },
-            create: { name }
-          }))
-        }
-      }
+            create: { name },
+          })),
+        },
+      },
     })
 
     revalidatePath(paths.dashboard())

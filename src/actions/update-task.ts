@@ -1,7 +1,7 @@
 'use server'
 
-import sql from '@/lib/db'
-import { Task } from '@/lib/dtos'
+import prisma from '@/lib/db'
+import { Task } from '@prisma/client'
 import * as yup from 'yup'
 import { revalidatePath } from 'next/cache'
 import {
@@ -38,13 +38,25 @@ export async function updateTask(task: {
   const { id, title, summary } = data
 
   try {
-    const task = (
-      await sql`
-        UPDATE task
-        SET title = ${title}, summary = ${summary}, tags = ${normalizedTags}
-        WHERE id = ${id}
-        RETURNING id, title, summary, tags`
-    )[0]
+    const task = prisma.task.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: title,
+        summary: summary,
+        tags: {
+          set: [],
+          connectOrCreate: normalizedTags.map((tag) => ({
+            where: { name: tag },
+            create: { name: tag },
+          })),
+        },
+        include: {
+          tags: true,
+        },
+      },
+    })
 
     revalidatePath(paths.dashboard())
 

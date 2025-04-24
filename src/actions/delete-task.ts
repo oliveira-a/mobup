@@ -7,8 +7,8 @@ import prisma from '@/lib/db'
 export async function deleteTask(id: int): Promise<boolean> {
   await prisma.task.delete({
     where: {
-      id: id
-    }
+      id: id,
+    },
   })
 
   revalidatePath(paths.dashboard())

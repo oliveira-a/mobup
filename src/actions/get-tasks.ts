@@ -7,9 +7,9 @@ export async function getTasks(): Promise<Task[]> {
   const tasks = await prisma.task.findMany({
     include: {
       user: true,
-      tags: true
-    }
+      tags: true,
+    },
   })
-  
+
   return tasks
 }

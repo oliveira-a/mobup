@@ -1,7 +1,7 @@
 'use client'
 
 import { TaskCard } from '@/components/tasks/task-card'
-import { Task } from '@/lib/dtos'
+import { Task } from '@prisma/client'
 import {
   Sheet,
   SheetHeader,
@@ -163,7 +163,7 @@ export function TasksDashboard({ tasks }: TasksDashboardProps) {
                   {selectedTask?.tags.map((tag, i) => (
                     <Tag
                       key={i}
-                      name={tag}
+                      name={tag.name}
                       className='hover:border'
                       onClick={() => setEditingTags(true)}
                     />

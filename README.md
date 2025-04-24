@@ -47,7 +47,7 @@ Whether you're stuck on a task or just want to work more closely with your teamm
    npm install
    ```
 
-5. **Start the development server:**
+3. **Start the development server:**
 
    ```bash
    npm run dev
