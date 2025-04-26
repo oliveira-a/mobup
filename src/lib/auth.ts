@@ -21,8 +21,7 @@ export const authOptions = {
   },
   callbacks: {
     async redirect({ baseUrl }) {
-      // User has logged in. Redirect them to the dashboard.
-      return `${baseUrl}${paths.dashboard}`
+      return `${baseUrl}${paths.dashboard()}`
     },
   },
 } satisfies NextAuthConfig
