@@ -11,10 +11,9 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useActionState } from 'react'
-import { authenticate, authenticateGithub } from '@/actions/authenticate-user'
 import { useSearchParams } from 'next/navigation'
 import { GithubIcon } from 'lucide-react'
+import { signIn } from 'next-auth/react'
 
 export function LoginForm({
   className,
@@ -22,10 +21,6 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<'div'>) {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackurl') || '/dashboard'
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined
-  )
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -37,7 +32,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={formAction}>
+          <form action="">
             <div className='flex flex-col gap-6'>
               <div className='grid gap-2'>
                 <Label htmlFor='email'>Email</Label>
@@ -62,19 +57,14 @@ export function LoginForm({
                 <Input id='password' name='password' type='password' required />
               </div>
               <input type='hidden' name='redirectTo' value={callbackUrl} />
-              <Button type='submit' className='w-full' disabled={isPending}>
+              <Button type='submit' className='w-full' >
                 Login
               </Button>
               <span className='self-center'>or</span>
-              <Button onClick={async () => await authenticateGithub()}>
+              <Button onClick={async () => await signIn('github')}>
                 <GithubIcon />
                 Login with GitHub
               </Button>
-              {errorMessage && (
-                <>
-                  <p className='text-sm text-red-500'>{errorMessage}</p>
-                </>
-              )}
             </div>
             <div className='mt-4 text-center text-sm'>
               Don&apos;t have an account?{' '}

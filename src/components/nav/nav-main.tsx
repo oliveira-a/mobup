@@ -12,17 +12,18 @@ import {
 import { useRouter } from 'next/navigation'
 import { CreateTaskForm } from '@/components/tasks/create-task-form'
 import { useState } from 'react'
+import { User } from 'next-auth'
 
 export function NavMain({
   items,
-  userId,
+  user
 }: {
   items: {
     title: string
     url: string
     icon?: LucideIcon
   }[]
-  string
+  user: User | undefined
 }) {
   const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
@@ -59,7 +60,7 @@ export function NavMain({
         </SidebarGroupContent>
       </SidebarGroup>
       <CreateTaskForm
-        ownerId={userId}
+        ownerId={user?.id}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       />

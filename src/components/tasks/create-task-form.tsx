@@ -19,7 +19,7 @@ import { Toaster, toast } from 'sonner'
 type CreateTaskFormProps = {
   modalOpen: boolean
   setModalOpen: Dispatch<SetStateAction<boolean>>
-  ownerId: string
+  ownerId: string | undefined
 }
 
 export const CreateTaskForm = ({

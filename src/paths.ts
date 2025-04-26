@@ -5,14 +5,11 @@ const paths = {
   dashboard() {
     return '/dashboard'
   },
-  viewTask(id: string) {
-    return `/tasks/${id}`
-  },
   login() {
     return '/login'
   },
   logout() {
-    // Change this to whatever you want.
+    // todo: a log out page.
     return '/login'
   },
   seed() {

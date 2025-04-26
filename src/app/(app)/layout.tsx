@@ -2,7 +2,10 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import '../globals.css'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/app-sidebar'
-import * as actions from '@/actions'
+import getServerSession from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import paths from '@/paths'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,14 +22,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const session = await actions.getAuthSession()
+  const serverSession = await getServerSession(authOptions)
+  const authSession = await serverSession.auth()
+  if (!authSession) {
+    redirect(paths.login())
+  }
+
   return (
     <html lang='en'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider>
-          <AppSidebar user={session.user} />
+          <AppSidebar user={authSession?.user} />
           <main>
             <SidebarTrigger />
             {children}

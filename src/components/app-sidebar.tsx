@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { ArrowUpCircleIcon, LayoutDashboardIcon } from 'lucide-react'
-
 import { NavMain } from '@/components/nav/nav-main'
 import { NavUser } from '@/components/nav/nav-user'
 import {
@@ -15,6 +14,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import paths from '@/paths'
+import { User } from 'next-auth'
 
 const data = {
   navMain: [
@@ -26,10 +26,10 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user }: { user: User | undefined }) {
   return (
     <>
-      <Sidebar collapsible='offcanvas' {...props}>
+      <Sidebar collapsible='offcanvas'>
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -46,10 +46,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-          <NavMain userId={props.user.id} items={data.navMain} />
+          <NavMain user={user} items={data.navMain} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={props.user} />
+          <NavUser user={user} />
         </SidebarFooter>
       </Sidebar>
     </>

@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { cn, getInitials } from '@/lib/utils'
+import { getInitials } from '@/lib/utils'
 import { Tag } from '@/components/tag'
-import { Task } from '@/prisma/client'
+import { Task } from '@prisma/client'
 
 interface TaskCardProps {
   task: Task
