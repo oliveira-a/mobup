@@ -1,15 +1,7 @@
 'use client'
 
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { getInitials } from '@/lib/utils'
-import { Tag } from '@/components/tag'
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Task } from '@prisma/client'
 
 interface TaskCardProps {
@@ -19,33 +11,24 @@ interface TaskCardProps {
 
 export function TaskCard({ task, onTitleClick }: TaskCardProps) {
   return (
-    <Card className='w-[300px] m-3 self-end'>
+    <Card className="w-full">
       <CardHeader>
-        <div className='flex flex-row justify-between items-start text-sm'>
-          <CardTitle
-            className='hover:underline cursor-pointer'
+        <CardTitle
+            className='hover:underline cursor-pointer text-xl'
             onClick={() => onTitleClick(task)}
-          >
-            {task.title}
-          </CardTitle>
-        </div>
-        <CardDescription>{task.summary}</CardDescription>
+        >{task.title}</CardTitle>
+        {task.user.name && <p className="text-sm text-muted-foreground mt-1">By {task.user.name}</p>}
       </CardHeader>
-      <CardFooter className='text-sm flex flex-col'>
-        <div className='flex flex-row'>
-          <Avatar className='h-5 w-5 mr-1 grayscale'>
-            <AvatarFallback className='text-xs'>
-              {getInitials(task.user.name)}
-            </AvatarFallback>
-          </Avatar>
-          <span className='font-medium'>{task.user.name}</span>
-        </div>
-        <div className='block flex flex-wrap gap-2 mt-2'>
-          {task.tags.map((tag, i) => (
-            <Tag key={i} name={tag.name} />
+      <CardContent className="space-y-4">
+        <p className="text-sm text-muted-foreground">{task.summary}</p>
+        <div className="flex flex-wrap gap-2">
+          {task.tags.map((tag) => (
+            <Badge key={tag.name} variant="secondary">
+              {tag.name}
+            </Badge>
           ))}
         </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   )
 }
