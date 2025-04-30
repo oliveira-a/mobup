@@ -2,16 +2,18 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Task } from '@prisma/client'
+import { TaskWithRelations } from "@/lib/types/task"
+import Link from "next/link"
 
 export const TaskCard = ({ task }: { task: TaskWithRelations }) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle
-            className='hover:underline cursor-pointer text-xl'
-            onClick={() => onTitleClick(task)}
-        >{task.title}</CardTitle>
+        <Link href={`/tasks/${task.id}`}>
+          <CardTitle
+              className='hover:underline cursor-pointer text-xl'
+          >{task.title}</CardTitle>
+        </Link>
         {task.user.name && <p className="text-sm text-muted-foreground mt-1">By {task.user.name}</p>}
       </CardHeader>
       <CardContent className="space-y-4">
