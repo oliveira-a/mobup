@@ -42,7 +42,6 @@ type CreateTaskFormState =
   | Record<string, never>
 
 export async function createTask(
-  formState: CreateTaskFormState,
   formData: FormData
 ): Promise<CreateTaskFormState> {
   const data = mapFormDataToSchema({ schema, formData })

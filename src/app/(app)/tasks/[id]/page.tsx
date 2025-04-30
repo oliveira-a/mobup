@@ -12,10 +12,10 @@ import {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ taskId: number }>
+  params: Promise<{ id: string }>
 }) {
-  const { taskId } = await params
-  const task = await actions.getTaskWithRelationsById(taskId)
+  const { id } = await params
+  const task = await actions.getTaskWithRelationsById(Number(id))
 
   return (
     <Card className='ml-50 mr-50'>

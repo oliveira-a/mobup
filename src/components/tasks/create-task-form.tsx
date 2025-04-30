@@ -38,7 +38,6 @@ export const CreateTaskForm = ({
 
   return (
     <>
-      {/* todo: add on close callback to clean the form */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <form action={action}>
