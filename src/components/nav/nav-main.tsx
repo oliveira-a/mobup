@@ -13,10 +13,11 @@ import { useRouter } from 'next/navigation'
 import { CreateTaskForm } from '@/components/tasks/create-task-form'
 import { useState } from 'react'
 import { User } from 'next-auth'
+import paths from '@/paths'
 
 export function NavMain({
   items,
-  user
+  user,
 }: {
   items: {
     title: string
@@ -37,7 +38,10 @@ export function NavMain({
               <SidebarMenuButton
                 tooltip='Quick Create'
                 className='min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground'
-                onClick={() => setModalOpen(true)}
+                onClick={() => {
+                  router.push(paths.dashboard())
+                  setModalOpen(true)
+                }}
               >
                 <PlusCircleIcon />
                 <span>Create Task</span>

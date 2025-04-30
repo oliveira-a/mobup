@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sidebar'
 import paths from '@/paths'
 import { User } from 'next-auth'
+import Link from 'next/link'
 
 const data = {
   navMain: [
@@ -37,10 +38,10 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                 asChild
                 className='data-[slot=sidebar-menu-button]:!p-1.5'
               >
-                <a href={paths.dashboard()}>
+                <Link href={paths.dashboard()}>
                   <ArrowUpCircleIcon className='h-5 w-5' />
                   <span className='text-base font-semibold'>mobup.</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
