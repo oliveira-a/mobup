@@ -1,9 +1,9 @@
 'use server'
 
 import prisma from '@/lib/db'
-import { Task } from '@prisma/client'
+import { TaskWithRelations } from '@/lib/types/task'
 
-export async function getTasks(): Promise<Task[]> {
+export async function getTasksWithRelations(): Promise<TaskWithRelations[]> {
   const tasks = await prisma.task.findMany({
     include: {
       user: true,

@@ -2,7 +2,11 @@ import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import * as yup from 'yup'
 
-export function getInitials(name: string) {
+export function getInitials(name: string | null) {
+  if (name == null) {
+    return ""
+  }
+
   const split = name.split(' ')
   return split[0][0] + split[split.length - 1][0]
 }

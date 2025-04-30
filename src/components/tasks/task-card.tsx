@@ -4,12 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Task } from '@prisma/client'
 
-interface TaskCardProps {
-  task: Task
-  onTitleClick?: (task: Task) => void
-}
-
-export function TaskCard({ task, onTitleClick }: TaskCardProps) {
+export const TaskCard = ({ task }: { task: TaskWithRelations }) => {
   return (
     <Card className="w-full">
       <CardHeader>
