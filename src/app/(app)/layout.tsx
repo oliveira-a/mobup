@@ -35,7 +35,7 @@ export default async function RootLayout({
       >
         <SidebarProvider>
           <AppSidebar user={authSession?.user} />
-          <main>
+          <main className="w-full">
             <SidebarTrigger />
             {children}
           </main>
