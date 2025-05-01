@@ -1,95 +1,40 @@
 'use server'
 
-import * as yup from 'yup'
 import { revalidatePath } from 'next/cache'
-import {
-  FormState,
-  mapFormDataToSchema,
-  getValidationErrors,
-  hasValidationErrors,
-} from '@/lib/utils'
 import paths from '@/paths'
-import prisma from '@/lib/db'
+import db from '@/lib/db'
+import getServerSession from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
-const schema = yup.object({
-  ownerId: yup.string().trim().required('The owner id is missing.'),
-  title: yup
-    .string()
-    .trim()
-    .required('You need to provide a title for your task'),
-  summary: yup
-    .string()
-    .trim()
-    .required('You need to provide a summary for your task'),
-  tags: yup
-    .string()
-    .required('Please provide some tags as comma separated values'),
-})
+async function getUserId(): Promise<string> {
+  const session = await getServerSession(authOptions)
+  const auth = await session.auth()
 
-type CreateTaskFormState =
-  | {
-      type: 'success'
-      data: {
-        id: string
+  if (!auth?.user) {
+    throw new Error("User could not be obtained from session.")
+  }
+
+  return auth.user.id!
+}
+
+export async function createTask(task: {
+  title: string,
+  summary: string,
+  tags: string[]
+}) {
+  await db.task.create({
+    data: {
+      title: task.title,
+      summary: task.summary,
+      userId: await getUserId(),
+      tags: {
+        connectOrCreate: task.tags.map(t => ({
+          where: { name: t },
+          create: { name: t}
+        }))
       }
-      errors?: never
-    }
-  | {
-      type: 'error'
-      data?: never
-      errors: FormState<typeof schema>
-    }
-  | Record<string, never>
+    },
+  })
 
-export async function createTask(
-  formData: FormData
-): Promise<CreateTaskFormState> {
-  const data = mapFormDataToSchema({ schema, formData })
-  const validationErrors = await getValidationErrors({ schema, data })
-
-  if (hasValidationErrors(validationErrors)) {
-    console.log(validationErrors)
-    return {
-      type: 'error',
-      errors: validationErrors,
-    }
-  }
-
-  try {
-    const normalizedTags = data.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter(Boolean)
-
-    const task = await prisma.task.create({
-      data: {
-        userId: data.ownerId,
-        title: data.title,
-        summary: data.summary,
-        tags: {
-          connectOrCreate: normalizedTags.map((name) => ({
-            where: { name },
-            create: { name },
-          })),
-        },
-      },
-    })
-
-    revalidatePath(paths.dashboard())
-
-    return {
-      type: 'success',
-      data: {
-        id: task.id,
-      },
-    }
-  } catch (err) {
-    console.log(err)
-    return {
-      type: 'error',
-      errors: {
-        title: 'This was unsuccessful',
-      },
-    }
-  }
+  revalidatePath(paths.dashboard())
 }

@@ -17,7 +17,6 @@ import paths from '@/paths'
 
 export function NavMain({
   items,
-  user,
 }: {
   items: {
     title: string
@@ -64,7 +63,6 @@ export function NavMain({
         </SidebarGroupContent>
       </SidebarGroup>
       <CreateTaskForm
-        ownerId={user?.id}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       />
