@@ -4,7 +4,7 @@ import paths from '@/paths'
 import { revalidatePath } from 'next/cache'
 import prisma from '@/lib/db'
 
-export async function deleteTask(id: int): Promise<boolean> {
+export async function deleteTask(id: number) {
   await prisma.task.delete({
     where: {
       id: id,
@@ -12,6 +12,4 @@ export async function deleteTask(id: int): Promise<boolean> {
   })
 
   revalidatePath(paths.dashboard())
-
-  return true
 }

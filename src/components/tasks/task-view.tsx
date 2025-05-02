@@ -11,13 +11,29 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { TaskWithRelations } from '@/lib/types/task'
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash } from 'lucide-react'
 import { useState } from 'react'
+import * as actions from '@/actions'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../ui/alert-dialog'
+import { useRouter } from 'next/navigation'
+import paths from '@/paths'
 
 export default function TaskView({ task }: { task: TaskWithRelations }) {
   const [isEditMode, setIsEditMode] = useState(false)
-  // todo: allow for edit mode
+  const [deleteTaskAlertOpen, setDeleteTaskAlertOpen] = useState(false)
 
+  const router = useRouter()
+
+  // todo: allow for edit mode
   function editButtonOnClick() {
     if (!isEditMode) {
       setIsEditMode(true)
@@ -29,6 +45,12 @@ export default function TaskView({ task }: { task: TaskWithRelations }) {
     setIsEditMode(false)
   }
 
+  async function deleteTask() {
+    await actions.deleteTask(task.id)
+
+    router.push(paths.dashboard())
+  }
+
   return (
     <>
       <Card className='ml-50 mr-50 mb-5'>
@@ -38,11 +60,28 @@ export default function TaskView({ task }: { task: TaskWithRelations }) {
             <h1 className='scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-2xl'>
               Task #{task.id}
             </h1>
-            {/* todo: show this button if the user owns this task */}
-            <Button variant='ghost' onClick={() => editButtonOnClick()}>
-              <Pencil />
-              Edit
-            </Button>
+            <div>
+              {/* todo: track updated/creation time */}
+              <span>Last updated 3 days ago</span>
+              {/* todo: show this button if the user owns this task */}
+              <Button
+                className='ml-3'
+                variant='ghost'
+                onClick={() => editButtonOnClick()}
+              >
+                <Pencil />
+                Edit
+              </Button>
+              {/* todo: show this button if the user owns this task */}
+              <Button
+                className='ml-3'
+                variant='destructive'
+                onClick={() => setDeleteTaskAlertOpen(true)}
+              >
+                <Trash />
+                Delete
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -78,6 +117,21 @@ export default function TaskView({ task }: { task: TaskWithRelations }) {
           </div>
         </CardFooter>
       </Card>
+
+      <AlertDialog open={deleteTaskAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your task.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteTaskAlertOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => deleteTask()}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }
