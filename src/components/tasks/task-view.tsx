@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { TaskWithRelations } from '@/lib/types/task'
-import { Pencil, Trash, Save } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import { useState } from 'react'
 import * as actions from '@/actions'
 import {
@@ -28,10 +28,8 @@ import {
 import { useRouter } from 'next/navigation'
 import paths from '@/paths'
 
-export default function TaskView({ task }: { task: TaskWithRelations }) {
+export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRelations, userIsTaskOwner: boolean }) {
   const [deleteTaskAlertOpen, setDeleteTaskAlertOpen] = useState(false)
-  const userIsTaskOwner = true
-
   const router = useRouter()
 
   async function deleteTask() {
