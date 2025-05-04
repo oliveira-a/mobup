@@ -1,4 +1,4 @@
-import TaskView from "@/components/tasks/task-view"
+import TaskView from '@/components/tasks/task-view'
 import * as actions from '@/actions/getTaskWithRelationsById'
 
 export default async function Page({

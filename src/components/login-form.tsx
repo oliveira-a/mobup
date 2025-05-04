@@ -32,7 +32,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="">
+          <form action=''>
             <div className='flex flex-col gap-6'>
               <div className='grid gap-2'>
                 <Label htmlFor='email'>Email</Label>
@@ -57,7 +57,7 @@ export function LoginForm({
                 <Input id='password' name='password' type='password' required />
               </div>
               <input type='hidden' name='redirectTo' value={callbackUrl} />
-              <Button type='submit' className='w-full' >
+              <Button type='submit' className='w-full'>
                 Login
               </Button>
               <span className='self-center'>or</span>

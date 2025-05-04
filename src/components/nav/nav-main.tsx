@@ -62,10 +62,7 @@ export function NavMain({
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
-      <CreateTaskForm
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      />
+      <CreateTaskForm modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   )
 }

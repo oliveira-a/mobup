@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  SetStateAction,
-  Dispatch,
-  useState,
-} from 'react'
+import { SetStateAction, Dispatch, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -81,15 +77,16 @@ export const CreateTaskForm = ({
       await actions.createTask({
         title: data.title,
         summary: data.summary,
-        tags: data.tags.filter((t) => t !== undefined)
+        tags: data.tags.filter((t) => t !== undefined),
       })
-    
+
       form.reset()
       setModalOpen(false)
 
       toast.message('Your task has been added! 🎉')
-    } catch(error) {
-      const em = error instanceof Error ? error.message : 'An unexpected error occurred'
+    } catch (error) {
+      const em =
+        error instanceof Error ? error.message : 'An unexpected error occurred'
       setServerError(em)
       toast.error(em)
     } finally {
@@ -110,16 +107,16 @@ export const CreateTaskForm = ({
   }
 
   function removeTag(tagToRemove: string | undefined) {
-    const currentTags = form.getValues("tags")
+    const currentTags = form.getValues('tags')
     form.setValue(
-      "tags",
-      currentTags.filter((tag) => tag !== tagToRemove),
+      'tags',
+      currentTags.filter((tag) => tag !== tagToRemove)
     )
-    form.trigger("tags")
+    form.trigger('tags')
   }
 
   function handleTagKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault()
       addTag()
     }
@@ -130,9 +127,7 @@ export const CreateTaskForm = ({
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              Add a new Task
-            </DialogTitle>
+            <DialogTitle>Add a new Task</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form

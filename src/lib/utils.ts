@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 export function getInitials(name: string | null) {
   if (name == null) {
-    return ""
+    return ''
   }
 
   const split = name.split(' ')

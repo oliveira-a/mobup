@@ -11,15 +11,15 @@ async function getUserId(): Promise<string> {
   const auth = await session.auth()
 
   if (!auth?.user) {
-    throw new Error("User could not be obtained from session.")
+    throw new Error('User could not be obtained from session.')
   }
 
   return auth.user.id!
 }
 
 export async function createTask(task: {
-  title: string,
-  summary: string,
+  title: string
+  summary: string
   tags: string[]
 }) {
   await db.task.create({
@@ -28,11 +28,11 @@ export async function createTask(task: {
       summary: task.summary,
       userId: await getUserId(),
       tags: {
-        connectOrCreate: task.tags.map(t => ({
+        connectOrCreate: task.tags.map((t) => ({
           where: { name: t },
-          create: { name: t}
-        }))
-      }
+          create: { name: t },
+        })),
+      },
     },
   })
 
