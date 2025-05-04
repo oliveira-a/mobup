@@ -11,9 +11,10 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { TaskWithRelations } from '@/lib/types/task'
 import { Trash } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import * as actions from '@/actions'
 import {
   AlertDialog,
@@ -27,9 +28,29 @@ import {
 } from '../ui/alert-dialog'
 import { useRouter } from 'next/navigation'
 import paths from '@/paths'
+import { useClickOutside } from '@/components/useClickOutsideHook'
 
-export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRelations, userIsTaskOwner: boolean }) {
+export default function TaskView({
+  task,
+  userIsTaskOwner,
+}: {
+  task: TaskWithRelations
+  userIsTaskOwner: boolean
+}) {
   const [deleteTaskAlertOpen, setDeleteTaskAlertOpen] = useState(false)
+
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [isEditingSummary, setIsEditingSummary] = useState(false)
+
+  const [titleInput, setTitleInput] = useState(task.title)
+  const [summaryInput, setSummaryInput] = useState(task.summary)
+
+  const titleRef = useRef<HTMLInputElement>(null)
+  useClickOutside(titleRef, () => setIsEditingTitle(false))
+
+  const summaryRef = useRef<HTMLTextAreaElement>(null)
+  useClickOutside(summaryRef, () => setIsEditingSummary(false))
+
   const router = useRouter()
 
   async function deleteTask() {
@@ -53,7 +74,7 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
             <div>
               <span>Last updated 3 days ago</span>
               {/* todo: show this button if the user owns this task */}
-              { userIsTaskOwner &&
+              {userIsTaskOwner && (
                 <Button
                   className='ml-3 '
                   variant='destructive'
@@ -62,18 +83,30 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
                   <Trash />
                   Delete
                 </Button>
-              }
+              )}
             </div>
           </div>
         </CardContent>
       </Card>
       <Card className='ml-50 mr-50'>
         <CardHeader>
-          <CardTitle
-            className={styleAsOwner('text-xl font-bold')}
-          >
-          {task.title}
-          </CardTitle>
+          {isEditingTitle ? (
+            <Input
+              name='titleInput'
+              ref={titleRef}
+              value={titleInput}
+              onChange={(e) => setTitleInput(e.target.value)}
+            />
+          ) : (
+            <CardTitle
+              className={styleAsOwner('text-xl font-bold')}
+              onClick={() => {
+                setIsEditingTitle(true)
+              }}
+            >
+              {titleInput}
+            </CardTitle>
+          )}
           <CardDescription>by {task.user.name}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -81,7 +114,20 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
             <h3 className='text-sm font-medium text-muted-foreground mb-2'>
               Summary
             </h3>
-            <p className={styleAsOwner('')}>{task.summary}</p>
+            {isEditingSummary ? (
+              <Textarea
+                ref={summaryRef}
+                value={summaryInput}
+                onChange={(e) => setSummaryInput(e.target.value)}
+              />
+            ) : (
+              <p
+                className={styleAsOwner('')}
+                onClick={() => setIsEditingSummary(true)}
+              >
+                {summaryInput}
+              </p>
+            )}
           </div>
         </CardContent>
         <CardFooter>
