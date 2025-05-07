@@ -28,7 +28,7 @@ import {
 } from '../ui/alert-dialog'
 import { useRouter } from 'next/navigation'
 import paths from '@/paths'
-import { useClickOutside } from '@/components/useClickOutsideHook'
+import { useClickOutside } from '@/hooks/use-click-outside'
 
 export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRelations, userIsTaskOwner: boolean }) {
   const router = useRouter()
@@ -140,6 +140,7 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
               Tags
             </h3>
             <div className={styleAsOwner('flex flex-wrap gap-2')}>
+            {/* todo: add editable input here */}
               {task.tags.map((tag) => (
                 <Badge
                   key={tag.id}
