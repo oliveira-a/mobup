@@ -1,5 +1,3 @@
-# mobup
-
 ![logo](./public/logo.png)
 
 **mobup** is a collaborative platform built with Next.js that helps engineering
