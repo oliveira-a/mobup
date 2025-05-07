@@ -36,11 +36,10 @@ export function AppSidebar({ user }: { user: User | undefined }) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                className='data-[slot=sidebar-menu-button]:!p-1.5'
+                className='data-[slot=sidebar-menu-button]:!p-1.5 hover:!bg-transparent'
               >
                 <Link href={paths.dashboard()}>
-                  <ArrowUpCircleIcon className='h-5 w-5' />
-                  <span className='text-base font-semibold'>mobup.</span>
+                  <img src="/logo.png" alt="Mobup logo" width={100} />
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
