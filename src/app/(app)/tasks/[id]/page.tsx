@@ -1,5 +1,5 @@
 import TaskView from '@/components/tasks/task-view'
-import * as actions from '@/actions/getTaskWithRelationsById'
+import * as actions from '@/actions'
 import getServerSession from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
