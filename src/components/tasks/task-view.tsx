@@ -13,8 +13,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { TaskWithRelations } from '@/lib/types/task'
-import { Trash } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { Trash, X } from 'lucide-react'
+import { useState, useRef, KeyboardEvent } from 'react'
 import * as actions from '@/actions'
 import {
   AlertDialog,
@@ -30,29 +30,47 @@ import { useRouter } from 'next/navigation'
 import paths from '@/paths'
 import { useClickOutside } from '@/hooks/use-click-outside'
 
-export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRelations, userIsTaskOwner: boolean }) {
+export default function TaskView({
+	task, 
+	userIsTaskOwner 
+}: {
+	task: TaskWithRelations,
+	userIsTaskOwner: boolean
+}) {
   const router = useRouter()
 
   const [deleteTaskAlertOpen, setDeleteTaskAlertOpen] = useState(false)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [isEditingSummary, setIsEditingSummary] = useState(false)
+  const [isEditingTags, setIsEditingTags] = useState(false)
   const [titleInput, setTitleInput] = useState(task.title)
   const [summaryInput, setSummaryInput] = useState(task.summary)
+  const [tagsInput, setTagsInput] = useState(task.tags.map(t => t.name))
+  const [newTagInput, setNewTagInput] = useState('')
 
   const titleRef = useRef<HTMLInputElement>(null)
-  useClickOutside(titleRef, () => updateTitle())
+  useClickOutside(titleRef, () => updateTask())
 
   const summaryRef = useRef<HTMLTextAreaElement>(null)
-  useClickOutside(summaryRef, () => updateSummary())
+  useClickOutside(summaryRef, () => updateTask())
 
-  async function updateTitle() {
-    // todo
-    setIsEditingTitle(false)
-  }
+  const tagsRef = useRef<HTMLDivElement>(null)
+  useClickOutside(tagsRef, () => updateTask())
 
-  async function updateSummary() {
-    // todo
-    setIsEditingSummary(false)
+  async function updateTask() {
+		try {
+			await actions.updateTask({
+				id: task.id,
+				title: titleInput,
+				summary: summaryInput, 
+				tags: tagsInput,
+			})
+			setIsEditingTitle(false)
+			setIsEditingSummary(false)
+			setIsEditingTags(false)
+		} catch (err) {
+			console.error(err)
+		}
   }
 
   async function deleteTask() {
@@ -61,8 +79,20 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
     router.push(paths.dashboard())
   }
 
+  function handleAddTag(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' && newTagInput.trim()) {
+      e.preventDefault()
+      setTagsInput([...tagsInput, newTagInput.trim()])
+      setNewTagInput('')
+    }
+  }
+
+  function handleDeleteTag(tag: string) {
+    setTagsInput(tagsInput.filter(t => t !== tag))
+  }
+
   function styleAsOwner(style: string): string {
-    return userIsTaskOwner ? `hover:boder-solid hover:border-2 ${style}` : style
+    return userIsTaskOwner ? `hover:border-solid hover:border-2 ${style}` : style
   }
 
   return (
@@ -139,17 +169,59 @@ export default function TaskView({ task, userIsTaskOwner }: { task: TaskWithRela
             <h3 className='text-sm font-medium text-muted-foreground mb-2'>
               Tags
             </h3>
-            <div className={styleAsOwner('flex flex-wrap gap-2')}>
-            {/* todo: add editable input here */}
-              {task.tags.map((tag) => (
-                <Badge
-                  key={tag.id}
-                  variant='secondary'
-                  className='flex items-center gap-1'
-                >
-                  {tag.name}
-                </Badge>
-              ))}
+            <div 
+              ref={tagsRef}
+              className={styleAsOwner('flex flex-wrap gap-2')}
+              onClick={() => !isEditingTags && userIsTaskOwner && setIsEditingTags(true)}
+            >
+              {isEditingTags ? (
+                <div className="w-full">
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {tagsInput.map((tag, i) => (
+                      <Badge
+                        key={i}
+                        variant='secondary'
+                        className='flex items-center gap-1'
+                      >
+                        {tag}
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteTag(tag)
+                          }}
+                          className="ml-1 rounded-full hover:bg-muted p-0.5"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                  <Input
+                    value={newTagInput}
+                    onChange={(e) => setNewTagInput(e.target.value)}
+                    onKeyDown={handleAddTag}
+                    placeholder="Type a tag and press Enter"
+                    className="mt-2"
+                    autoFocus
+                  />
+                </div>
+              ) : (
+                <>
+                  {tagsInput.length > 0 ? (
+                    tagsInput.map((tag, i) => (
+                      <Badge
+                        key={i}
+                        variant='secondary'
+                        className='flex items-center gap-1'
+                      >
+                        {tag}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-muted-foreground text-sm">No tags</span>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </CardFooter>
